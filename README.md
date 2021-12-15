@@ -3,6 +3,7 @@
 This is a simple server that scrapes BunnyCDN stats and exports them via HTTP for
 Prometheus consumption.
 
+forked from: https://github.com/permutive/bunnycdn_exporter
 ## Getting Started
 
 To run it:
@@ -16,12 +17,6 @@ Help on flags:
 ```bash
 ./bunnycdn_exporter --help
 ```
-
-For more information check the [source code documentation][gdocs]. All of the
-core developers are accessible via the Prometheus Developers [mailinglist][].
-
-[gdocs]: http://godoc.org/github.com/permutive/bunnycdn_exporter
-[mailinglist]: https://groups.google.com/forum/?fromgroups#!forum/prometheus-developers
 
 ## Usage
 
@@ -40,20 +35,18 @@ bunnycdn_exporter"
 
 ### Docker
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/permutive/bunnycdn-exporter.svg?maxAge=604800)][hub]
-
 To run the bunnycdn exporter as a Docker container, run:
 
 ```bash
-docker run -p 9584:9584 permutive/bunnycdn-exporter --bunnycdn.api-key="<API_KEY>"
+docker run -p 9584:9584 ghcr.io/paulrostorp/bunnycdn-prometheus-exporter --bunnycdn.api-key="<API_KEY>"
 ```
 
 alternatively, the API key can be passed as an environment variable:
 ```bash
-docker run -p 9584:9584 -e BUNNYCDN_API_KEY="<API_KEY>" permutive/bunnycdn-exporter"
+docker run -p 9584:9584 -e BUNNYCDN_API_KEY="<API_KEY>" ghcr.io/paulrostorp/bunnycdn-prometheus-exporter
 ```
 
-[hub]: https://hub.docker.com/r/permutive/bunnycdn-exporter/
+[View all docker images](https://github.com/paulrostorp/bunnycdn-prometheus-exporter/pkgs/container/bunnycdn-prometheus-exporter)
 
 ## Development
 
@@ -62,22 +55,6 @@ docker run -p 9584:9584 -e BUNNYCDN_API_KEY="<API_KEY>" permutive/bunnycdn-expor
 
 [goreportcard]: https://goreportcard.com/report/github.com/permutive/bunnycdn_exporter
 [codeclimate]: https://codeclimate.com/github/permutive/bunnycdn_exporter
-
-### Building
-
-```bash
-make build
-```
-
-### Testing
-
-[![Build Status](https://travis-ci.org/permutive/bunnycdn_exporter.png?branch=master)][travisci]
-
-```bash
-make test
-```
-
-[travisci]: https://travis-ci.org/prometheus/bunnycdn_exporter
 
 ## License
 
