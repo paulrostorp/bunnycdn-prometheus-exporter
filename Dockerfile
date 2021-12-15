@@ -1,7 +1,19 @@
-FROM        quay.io/prometheus/busybox:latest
-LABEL maintainer="The Prometheus Authors <prometheus-developers@googlegroups.com>"
+FROM golang:alpine as builder
 
-COPY bunnycdn_exporter /bin/bunnycdn_exporter
+WORKDIR /app
+
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
+
+COPY *.go ./
+
+RUN go build -o bunnycdn_exporter
+
+FROM golang:alpine
+WORKDIR /bin
+
+COPY --from=builder /app/bunnycdn_exporter ./
 
 ENTRYPOINT ["/bin/bunnycdn_exporter"]
 EXPOSE     9584
