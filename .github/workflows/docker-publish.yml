@@ -42,7 +42,7 @@ jobs:
           go-version: 1.17
 
       - name: Install dependencies
-        run: go mode vendor
+        run: go mod vendor
 
       - name: Build
         run: go build .
