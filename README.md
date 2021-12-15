@@ -48,14 +48,6 @@ docker run -p 9584:9584 -e BUNNYCDN_API_KEY="<API_KEY>" ghcr.io/paulrostorp/bunn
 
 [View all docker images](https://github.com/paulrostorp/bunnycdn-prometheus-exporter/pkgs/container/bunnycdn-prometheus-exporter)
 
-## Development
-
-[![Go Report Card](https://goreportcard.com/badge/github.com/permutive/bunnycdn_exporter)][goreportcard]
-[![Code Climate](https://codeclimate.com/github/permutive/bunnycdn_exporter/badges/gpa.svg)][codeclimate]
-
-[goreportcard]: https://goreportcard.com/report/github.com/permutive/bunnycdn_exporter
-[codeclimate]: https://codeclimate.com/github/permutive/bunnycdn_exporter
-
 ## License
 
 Apache License 2.0, see [LICENSE](https://github.com/prometheus/bunnycdn_exporter/blob/master/LICENSE).
