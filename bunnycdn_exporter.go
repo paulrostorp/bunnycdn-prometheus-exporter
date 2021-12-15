@@ -62,9 +62,10 @@ type bunnyPullZone struct {
 }
 
 type bunnyLocation struct {
-	Region   string
-	Location string
-	Requests float64
+	Region      string
+	Location    string
+	CountryCode string
+	Requests    float64
 }
 
 type bunnyStatistics struct {
@@ -86,12 +87,14 @@ func (s bunnyStatistics) trafficLocations() []bunnyLocation {
 	locations := make([]bunnyLocation, 0, len(s.GeoTrafficDistribution))
 	for loc, req := range s.GeoTrafficDistribution {
 		parts := strings.Split(loc, ":")
+		countryCode := strings.TrimSpace(strings.Split(parts[1], ",")[1])
 		locations = append(
 			locations,
 			bunnyLocation{
-				Region:   parts[0],
-				Location: strings.TrimSpace(parts[1]),
-				Requests: req,
+				Region:      parts[0],
+				Location:    strings.TrimSpace(parts[1]),
+				CountryCode: countryCode,
+				Requests:    req,
 			})
 	}
 	return locations
@@ -129,7 +132,7 @@ var (
 		metricErr3xx:             newMetric("request_error_count", "Request error by code.", []string{"pull_zone"}, prometheus.Labels{"code": "3xx"}),
 		metricErr4xx:             newMetric("request_error_count", "Request error by code.", []string{"pull_zone"}, prometheus.Labels{"code": "4xx"}),
 		metricErr5xx:             newMetric("request_error_count", "Request error by code.", []string{"pull_zone"}, prometheus.Labels{"code": "5xx"}),
-		metricGeoTrafficDist:     newMetric("requests_served", "Request by location.", []string{"pull_zone", "region", "location"}, nil),
+		metricGeoTrafficDist:     newMetric("requests_served", "Request by location.", []string{"pull_zone", "region", "location", "country_code"}, nil),
 	}
 	bunnyUp = prometheus.NewDesc(prometheus.BuildFQName(namespace, "", "up"), "Was the last scrape of bunnyCDN successful.", nil, nil)
 )
@@ -341,7 +344,7 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) (up float64) {
 				ch <- prometheus.MustNewConstMetric(metric, prometheus.GaugeValue, extractFromMap(stats.Error5Xx), pullZone.Name)
 			case metricGeoTrafficDist:
 				for _, loc := range stats.trafficLocations() {
-					ch <- prometheus.MustNewConstMetric(metric, prometheus.GaugeValue, loc.Requests, pullZone.Name, loc.Region, loc.Location)
+					ch <- prometheus.MustNewConstMetric(metric, prometheus.GaugeValue, loc.Requests, pullZone.Name, loc.Region, loc.Location, loc.CountryCode)
 				}
 			}
 		}
